@@ -1,0 +1,98 @@
+{
+  "eval_set_id": "eval_set_5",
+  "name": "eval_set_5",
+  "description": null,
+  "eval_cases": [
+    {
+      "eval_id": "case4c89f4",
+      "conversation": [
+        {
+          "invocation_id": "e-21d6ea22-cea1-4426-ac3a-7ec5c073ec60",
+          "user_content": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "Username: Gregory, Can you tell me status of the ticket #213578? ",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "It seems that there is no ticket found with the ID #213578 for the user Gregory. If you have any other ticket ID or if you would like to check something else, please let me know!",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": null
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call_ZRDeWu0CnV6YFMGTH09CbhwK",
+                "args": {
+                  "request": "Can you tell me the status of the ticket #213578?"
+                },
+                "name": "intent_agent_v1",
+                "partial_args": null,
+                "will_continue": null
+              },
+              {
+                "id": "call_IAQCYdNLImk2bhkgFcCaoB70",
+                "args": {
+                  "agent_name": "query_agent_v1"
+                },
+                "name": "transfer_to_agent",
+                "partial_args": null,
+                "will_continue": null
+              },
+              {
+                "id": "call_bsy0LFkkapDwLTNylkIZAg5u",
+                "args": {
+                  "username": "Gregory",
+                  "ticketId": 213578
+                },
+                "name": "search_ticket_with_id",
+                "partial_args": null,
+                "will_continue": null
+              }
+            ],
+            "intermediate_responses": []
+          },
+          "creation_timestamp": 1780761913.666668
+        }
+      ],
+      "session_input": {
+        "app_name": "root_agent",
+        "user_id": "user",
+        "state": {}
+      },
+      "creation_timestamp": 1780761924.8611505
+    }
+  ],
+  "creation_timestamp": 1780761842.1335435
+}

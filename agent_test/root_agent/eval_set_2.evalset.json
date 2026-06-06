@@ -1,0 +1,98 @@
+{
+  "eval_set_id": "eval_set_2",
+  "name": "eval_set_2",
+  "description": null,
+  "eval_cases": [
+    {
+      "eval_id": "casebcdf4e",
+      "conversation": [
+        {
+          "invocation_id": "e-4e4d5824-04b2-4adf-b34b-404f64334d85",
+          "user_content": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "Username: Danny, Can you tell me the status of ticket id #189571?",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "The status of ticket ID #189571 is currently \"Open.\" If you need any further assistance, feel free to ask!",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": null
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call_hkapsvOc4gysMpqTixg4vdRJ",
+                "args": {
+                  "request": "Can you tell me the status of ticket id #189571?"
+                },
+                "name": "intent_agent_v1",
+                "partial_args": null,
+                "will_continue": null
+              },
+              {
+                "id": "call_HdsE9kvmBK70M9Yt5Bir4hXs",
+                "args": {
+                  "agent_name": "query_agent_v1"
+                },
+                "name": "transfer_to_agent",
+                "partial_args": null,
+                "will_continue": null
+              },
+              {
+                "id": "call_IsvEskjfH7ioFStAp8b0Wk0G",
+                "args": {
+                  "username": "Danny",
+                  "ticketId": 189571
+                },
+                "name": "search_ticket_with_id",
+                "partial_args": null,
+                "will_continue": null
+              }
+            ],
+            "intermediate_responses": []
+          },
+          "creation_timestamp": 1780761081.097663
+        }
+      ],
+      "session_input": {
+        "app_name": "root_agent",
+        "user_id": "user",
+        "state": {}
+      },
+      "creation_timestamp": 1780761095.5891442
+    }
+  ],
+  "creation_timestamp": 1780760625.5862188
+}

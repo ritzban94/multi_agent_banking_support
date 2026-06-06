@@ -1,0 +1,88 @@
+{
+  "eval_set_id": "eval_set_1",
+  "name": "eval_set_1",
+  "description": null,
+  "eval_cases": [
+    {
+      "eval_id": "case564b09",
+      "conversation": [
+        {
+          "invocation_id": "e-e5d86aea-cb1e-419e-a01d-5e3ce6989b18",
+          "user_content": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "Thank you for resolving credit card issue.",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "Thank you so much for your kind words, [username]! I'm really glad to hear that your credit card issue has been resolved. If you need any further assistance or have more feedback, feel free to reach out. Your satisfaction is our priority!",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null
+              }
+            ],
+            "role": null
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call_UjtZjcDLmj3GVmOL5BNEmCFL",
+                "args": {
+                  "request": "Thank you for resolving credit card issue."
+                },
+                "name": "intent_agent_v1",
+                "partial_args": null,
+                "will_continue": null
+              },
+              {
+                "id": "call_EFuEXqrEFaERyvgy9EFhok9H",
+                "args": {
+                  "agent_name": "positive_feedback_agent_v1"
+                },
+                "name": "transfer_to_agent",
+                "partial_args": null,
+                "will_continue": null
+              }
+            ],
+            "intermediate_responses": []
+          },
+          "creation_timestamp": 1780760287.191224
+        }
+      ],
+      "session_input": {
+        "app_name": "root_agent",
+        "user_id": "user",
+        "state": {}
+      },
+      "creation_timestamp": 1780760405.6218495
+    }
+  ],
+  "creation_timestamp": 1780760398.0072181
+}
