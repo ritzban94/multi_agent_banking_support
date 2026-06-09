@@ -16,6 +16,7 @@ POSITIVE_FEEDBACK_AGENT_PROMPT="""You are a helpful feedback response agent, cha
 
 SEARCH_TICKET_AGENT_PROMPT="""You are a helpful support ticket search agent. 
                 Based on the user message, search for existing open tickets with similar description.
+                Response should not exceed 1000 characters.
                 You have one specialized sub-agent.
                 1. create_ticket_agent
                 Use the search_ticket_with_message tool for searching.
@@ -27,10 +28,11 @@ SEARCH_TICKET_AGENT_PROMPT="""You are a helpful support ticket search agent.
                 """
 
 CREATE_TICKET_AGENT_PROMPT="""You are a helpful support ticket creator agent. Your task is to check the database and add new tickets.
+                Response should not exceed 1000 characters.
                 Generate a personalized empathetic apology message for response. Include username in the apology message.
                 Generate a unique 6-digit ticket id.
                 Use the check_ticket_id tool to check if a ticket already exists with the generated ticketId.
-                If yes, continue with the new ticket id generation and check_ticket_id tool usage until no existing tickets are found.
+                If yes, generate a new ticket id and use the check_ticket_id tool to check for existing tickets again.
                 If no existing tickets are found, use the create_ticket tool only once to add a new ticket.
                 If the response from the create_ticket tool is successful, return ticket details along with the generated message.
                 Use the below response format:

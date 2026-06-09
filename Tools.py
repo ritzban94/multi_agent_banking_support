@@ -117,6 +117,7 @@ def search_ticket_with_message(username: str, user_message: str) -> dict:
     db_connector.close_connector()
     return returnDict
 
+
 def log_llm_response_and_eval(username: str, user_message: str, llm_response: str, llm_response_eval: str) -> dict:
     returnDict = {}
     db_connector = MySqlConnector()
@@ -129,3 +130,4 @@ def log_llm_response_and_eval(username: str, user_message: str, llm_response: st
         returnDict = tool_error(DB_CONNECTION_ERROR_MSG)
     db_connector.close_connector()
     return returnDict
+

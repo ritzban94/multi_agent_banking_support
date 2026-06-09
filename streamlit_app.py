@@ -88,10 +88,10 @@ async def call_agents(chat_username, message):
     load_dotenv()
     sys.excepthook = global_exception_handler
     coordinator_agent = create_all_agents()
-    agent_content = types.Content(role='user', parts=[types.Part(text=f"Username: {chat_username}"),
-                                                  types.Part(text=f"User message: {message}")])
+    agent_content = types.Content(role='user', parts=[types.Part(text=f"Username: {chat_username}"), types.Part(text=f"User message: {message}")])
     agent_runner = AgentRunner(coordinator_agent, agent_content)
-    agent_response = await agent_runner.execute_agent()
+    agent_response, agent_logs = await agent_runner.execute_agent()
+    st.session_state["agent_logs"] = agent_logs
     return agent_response
 
 def log_and_eval_llm_response(chat_username, message, llm_response):
@@ -128,12 +128,15 @@ def log_and_eval_llm_response(chat_username, message, llm_response):
     judge_response_txt = judge_response.choices[0].message.content
     print(log_llm_response_and_eval(chat_username, message, llm_response, judge_response_txt))
 
+st.set_page_config(page_title="Banking Customer Support AI Agent", page_icon="🤖", initial_sidebar_state="expanded")
 st.header("Banking Customer Support AI Agent")
 st.divider()
 st.markdown("""
 A multi-agent AI banking assistant that classifies customer queries and feedback, delivers personalized responses, and provides real-time ticket updates to improve support efficiency and customer experience.
 """)
 st.divider()
+
+work_action_map = {"0" : "Positive", "1" : "Negative", "2" : "Query"}
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -144,12 +147,28 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+with st.sidebar:
+    if 'initialized' in st.session_state or st.session_state.get("initialized"):
+        session_user_id = st.session_state.get("user_id")
+        st.badge(label=f"User name : {session_user_id}", color='green')
+    st.subheader("📡 Live Agent Traffic")
+    if 'agent_logs' not in st.session_state or not st.session_state.get("agent_logs"):
+        st.info("Start the chat to see agent routing in real-time.")
+    else:
+        work_action = work_action_map.get(st.session_state.agent_logs["action"])
+        agents_list = st.session_state.agent_logs["agents"]
+        with st.expander(f"🟢 Route: {agents_list[-1]}", expanded=True):
+            st.write(f"**Path:** {' ➔ '.join(agents_list)}")
+            st.caption(f"**Action:** {work_action}")
+            # Render node visualizer
+            st.markdown(f"```text\n[User]\n  ➔ [Coordinator]\n    ➔ [Intent]\n      ➔ [{agents_list[-1]}]\n```")
+
 if 'initialized' not in st.session_state or not st.session_state.initialized:
     user_id = st.chat_input("Enter user id to proceed..")
     if user_id:
         st.session_state.user_id = user_id
         st.session_state.initialized = True
-        st.toast(f"User id : {user_id}", icon=":material/thumb_up:")
+        st.toast(f"User name : {user_id}", icon=":material/thumb_up:")
         time.sleep(0.5)
         st.rerun()
 else:
@@ -168,3 +187,4 @@ else:
         log_and_eval_llm_response(session_user_id, prompt, response)
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "user_id": session_user_id, "content": response})
+        st.rerun()
