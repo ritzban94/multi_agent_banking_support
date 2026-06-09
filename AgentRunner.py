@@ -37,8 +37,8 @@ class AgentRunner:
         )
 
         response_text = "Agent did not produce a final response"
-        response_logs = { "agents" : ['coordinator_agent', 'intent_agent'], "action": "" }
-        verbose= False
+        response_logs = { "agents" : ['coordinator_agent', 'intent_agent'], "action": "", "status": "" }
+        verbose= True
 
         async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=self._content):
             if verbose:
@@ -54,9 +54,11 @@ class AgentRunner:
             if event.is_final_response():
                 if event.content and event.content.parts:
                     response_text = event.content.parts[0].text ## # Assuming text response in the first part
+                    response_logs["status"] = "Success"
 
                 elif event.actions and event.actions.escalate:
                     response_text = f"Agent escalated: {event.error_message or 'No specific message provided.'}"
+                    response_logs["status"] = "Fail"
 
 
         await session_service.delete_session(

@@ -156,10 +156,12 @@ with st.sidebar:
         st.info("Start the chat to see agent routing in real-time.")
     else:
         work_action = work_action_map.get(st.session_state.agent_logs["action"])
+        workflow_status = st.session_state.agent_logs["status"]
         agents_list = st.session_state.agent_logs["agents"]
         with st.expander(f"🟢 Route: {agents_list[-1]}", expanded=True):
             st.write(f"**Path:** {' ➔ '.join(agents_list)}")
             st.caption(f"**Action:** {work_action}")
+            st.caption(f"**Status:** :blue-badge[**{workflow_status}**]")
             # Render node visualizer
             st.markdown(f"```text\n[User]\n  ➔ [Coordinator]\n    ➔ [Intent]\n      ➔ [{agents_list[-1]}]\n```")
 
