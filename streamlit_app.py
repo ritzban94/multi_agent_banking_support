@@ -2,12 +2,12 @@ from dotenv import load_dotenv
 from google.genai import types
 from google.adk.agents import Agent, SequentialAgent
 from google.adk.tools import agent_tool
-
+from google.adk.models.lite_llm import LiteLlm
 from LlmClient import llm_client
 from AgentRunner import AgentRunner
 from Prompts import *
 from Constants import *
-from Tools import create_ticket, search_ticket_with_id, search_ticket_with_message, check_ticket_id
+from Tools import create_ticket, search_ticket_with_id, search_ticket_with_message, check_ticket_id, log_llm_response_and_eval
 
 import sys
 import logging
@@ -18,7 +18,7 @@ import time
 
 def global_exception_handler(exctype, value, traceback):
     """Catches any unhandled runtime exception globally."""
-    logging.error("Unhandled exception occurred:", exc_info=(exctype, value, traceback))
+    logging.debug("Unhandled exception occurred:", exc_info=(exctype, value, traceback))
     print(f"A critical error occurred: {value}. The system has logged this event.")
 
 
@@ -94,6 +94,40 @@ async def call_agents(chat_username, message):
     agent_response = await agent_runner.execute_agent()
     return agent_response
 
+def log_and_eval_llm_response(chat_username, message, llm_response):
+    llm_judge_client = LiteLlm(JUDGE_MODEL_GPT)
+    LLM_JUDGE_PROMPT=f"""
+                You are an expert evaluator who will evaluate the agent's response to the user query.
+                The agent being used is a Banking Customer Support agent.
+                User name: {chat_username}
+                User Query:
+                {message}
+
+                Agent Response:
+                {llm_response}
+
+                Evaluate on:
+
+                1. Accuracy (1-5)
+                2. Completeness (1-5)
+                3. Empathy (1-5)
+                4. Clarity (1-5)
+                5. Overall score (1-5)
+
+                Return your evaluation in the below format only:
+                "accuracy": [score], "completeness": [score], "empathy": [score], "clarity": [score], "overall_score": [score], "reasoning": [your explanation for the scores provided within 100 characters]
+                """
+    judge_response = llm_judge_client.llm_client.completion(
+        model=llm_judge_client.model,
+        messages=[
+            {"role": "system", "content": JUDGE_MODEL_GPT_SYS_INIT_MESSAGE},
+            {"role": "user", "content": LLM_JUDGE_PROMPT}
+        ],
+        tools=[]
+    )
+    judge_response_txt = judge_response.choices[0].message.content
+    print(log_llm_response_and_eval(chat_username, message, llm_response, judge_response_txt))
+
 st.header("Banking Customer Support AI Agent")
 st.divider()
 st.markdown("""
@@ -131,5 +165,6 @@ else:
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             st.markdown(response)
+        log_and_eval_llm_response(session_user_id, prompt, response)
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "user_id": session_user_id, "content": response})

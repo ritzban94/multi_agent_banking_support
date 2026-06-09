@@ -4,3 +4,4 @@ python-dotenv
 mysql-connector-python
 sentence-transformers
 streamlit
+torchvision

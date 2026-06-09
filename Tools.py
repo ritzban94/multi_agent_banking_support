@@ -116,3 +116,16 @@ def search_ticket_with_message(username: str, user_message: str) -> dict:
             returnDict = tool_success(QUERY_RESULTS_STR, NOT_FOUND_STR)
     db_connector.close_connector()
     return returnDict
+
+def log_llm_response_and_eval(username: str, user_message: str, llm_response: str, llm_response_eval: str) -> dict:
+    returnDict = {}
+    db_connector = MySqlConnector()
+    db_connector.connect_to_db()
+    values = (username, user_message, llm_response, llm_response_eval)
+    result = db_connector.execute_insert_query(LOG_INSERT_QUERY, values)
+    if result == INSERT_SUCCESS_MSG:
+        returnDict = tool_success(QUERY_RESULTS_STR, result)
+    else:
+        returnDict = tool_error(DB_CONNECTION_ERROR_MSG)
+    db_connector.close_connector()
+    return returnDict

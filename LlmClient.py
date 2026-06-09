@@ -20,7 +20,6 @@ class LlmClient:
                 {"role": "system", "content": MODEL_GPT_SYS_INIT_MESSAGE},
                 {"role": "user", "content": MODEL_GPT_USER_INIT_MESSAGE}
             ],
-            temperature=0.1,
             tools=[]
         )
 
