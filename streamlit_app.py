@@ -173,7 +173,7 @@ if 'initialized' not in st.session_state or not st.session_state.initialized:
         st.rerun()
 else:
     session_user_id = st.session_state.get("user_id")
-    if prompt := st.chat_input("Type your problem here.."):
+    if prompt := st.chat_input("Type your message here.."):
         # Display user message in chat message container
         with st.chat_message("user"):
             st.markdown(prompt)
