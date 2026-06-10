@@ -64,7 +64,7 @@ def search_ticket_with_id(username: str, ticketId: int) -> dict:
         else:
             ticket_details = results[0]
             ticket_status = get_ticket_status(ticket_details[4])
-            returnDict = tool_success(QUERY_RESULTS_STR, f'Found. Status is {ticket_status}')
+            returnDict = tool_success(QUERY_RESULTS_STR, f'Found. Status is {ticket_status} and details are {ticket_details}')
     db_connector.close_connector()
     return returnDict
 

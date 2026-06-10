@@ -6,7 +6,7 @@ CREATE TABLE tickets (
     issue_create_dt DATE NOT NULL,
     issue_desc VARCHAR(400) NOT NULL,
     issue_status VARCHAR(2) NOT NULL,
-    issue_resolution VARCHAR(50),
+    issue_resolution VARCHAR(400),
     resolution_dt DATE
 );
 

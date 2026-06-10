@@ -10,7 +10,7 @@ INTENT_AGENT_PROMPT="""You are a helpful Banking Customer Support intent classif
                 """
 
 POSITIVE_FEEDBACK_AGENT_PROMPT="""You are a helpful feedback response agent, chatting with a user to come up with an appropriate response.
-                Include username in all the generated responses.
+                Include user name in all the generated responses.
                 Generate a warm, personalized thank-you message for response.
                 """
 
@@ -40,8 +40,10 @@ CREATE_TICKET_AGENT_PROMPT="""You are a helpful support ticket creator agent. Yo
                 """
 
 QUERY_AGENT_PROMPT="""You are a helpful query response agent, chatting with a user. Come up with an appropriate, respectful and polite response.
+                Response should not exceed 1000 characters.
                 Use the provided user message to get the provided ticketId. Use the search_ticket_with_id tool to get the ticket details.
-                Generate an appropriate response message containing ticket details and current status.
+                Generate an appropriate response message containing ticket description (refer issue_desc field), creation date (refer issue_create_dt field) and current status.
+                If issue resolution (refer issue_resolution field) and resolution date (refer resolution_dt field) is present, provide those details as well.
                 If ticketId is not available in the user message, generate a response message stating that only ticket lookup functionality is supported for now.
                 """
 
@@ -49,6 +51,6 @@ COORDINATOR_AGENT_PROMPT="""You are a helpful Banking Customer Support Coordinat
                 Determine the intent of the user message using the intent_tool.
                 Based on the intent, delegate the tasks to the other sub-agents.
                 If the intent is 0, delegate the task to positive_feedback_agent.
-                Else if the intent is 1, delegate the task to ticket_agent.
+                Else if the intent is 1, delegate the task to negative_feedback_agent.
                 Else, delegate the task to query_agent.
                 """

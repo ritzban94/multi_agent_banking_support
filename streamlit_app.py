@@ -21,7 +21,7 @@ def global_exception_handler(exctype, value, traceback):
     logging.debug("Unhandled exception occurred:", exc_info=(exctype, value, traceback))
     print(f"A critical error occurred: {value}. The system has logged this event.")
 
-
+@st.cache_resource
 def create_all_agents():
 
     llm = llm_client.get_llm_client()
@@ -57,8 +57,8 @@ def create_all_agents():
         sub_agents=[create_ticket_agent]
     )
 
-    ticket_agent = SequentialAgent(
-        name= "ticket_agent_v1",
+    negative_feedback_agent = SequentialAgent(
+        name= "negative_feedback_agent_v1",
         description="Entry agent for tickets",
         sub_agents=[search_ticket_agent]
     )
@@ -79,7 +79,7 @@ def create_all_agents():
         description=COORDINATOR_AGENT_DESC,
         instruction=COORDINATOR_AGENT_PROMPT,
         tools=[intent_agent_as_tool],
-        sub_agents=[positive_feedback_agent, ticket_agent, query_agent]
+        sub_agents=[positive_feedback_agent, negative_feedback_agent, query_agent]
     )
 
     return coordinator_agent
@@ -129,11 +129,8 @@ def log_and_eval_llm_response(chat_username, message, llm_response):
     print(log_llm_response_and_eval(chat_username, message, llm_response, judge_response_txt))
 
 st.set_page_config(page_title="Banking Customer Support AI Agent", page_icon="🤖", initial_sidebar_state="expanded")
-st.header("Banking Customer Support AI Agent")
-st.divider()
-st.markdown("""
-A multi-agent AI banking assistant that classifies customer queries and feedback, delivers personalized responses, and provides real-time ticket updates to improve support efficiency and customer experience.
-""")
+st.header(":bank: Banking Customer Support AI Agent")
+st.caption(":earth_asia: A multi-agent AI banking assistant that classifies customer queries and feedback, delivers personalized responses, and provides real-time ticket updates to improve support efficiency and customer experience.")
 st.divider()
 
 work_action_map = {"0" : "Positive", "1" : "Negative", "2" : "Query"}
@@ -148,10 +145,10 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 with st.sidebar:
+    st.subheader("📡 Live Agent Traffic")
     if 'initialized' in st.session_state or st.session_state.get("initialized"):
         session_user_id = st.session_state.get("user_id")
         st.badge(label=f"User name : {session_user_id}", color='green')
-    st.subheader("📡 Live Agent Traffic")
     if 'agent_logs' not in st.session_state or not st.session_state.get("agent_logs"):
         st.info("Start the chat to see agent routing in real-time.")
     else:
@@ -161,9 +158,9 @@ with st.sidebar:
         with st.expander(f"🟢 Route: {agents_list[-1]}", expanded=True):
             st.write(f"**Path:** {' ➔ '.join(agents_list)}")
             st.caption(f"**Action:** {work_action}")
-            st.caption(f"**Status:** :blue-badge[**{workflow_status}**]")
+            st.write(f"**Status:** :blue-badge[**{workflow_status}**]")
             # Render node visualizer
-            st.markdown(f"```text\n[User]\n  ➔ [Coordinator]\n    ➔ [Intent]\n      ➔ [{agents_list[-1]}]\n```")
+            st.markdown(f"```text\n[User query]\n  ➔ [Coordinator agent]\n    ➔ [Intent agent]\n      ➔ [{agents_list[-1]}]\n```")
 
 if 'initialized' not in st.session_state or not st.session_state.initialized:
     user_id = st.chat_input("Enter user id to proceed..")
